@@ -1,0 +1,38 @@
+# A docker-compose must always start by the version tag.
+# We use "3" because it's the last version at this time.
+version: "3"
+
+networks:
+  frontend:
+    name: frontend
+
+  backend:  
+    name: backend
+
+    
+services:
+  database:
+    image: mongo
+    restart: always
+    volumes:
+      - /home/<user>/data:/data/db
+    networks:
+      - backend
+
+  server:
+    build: server/
+    restart: always
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - database
+
+  client:
+    build: client/
+    networks:
+      - frontend
+    depends_on:
+      - server
+      - database
+    command: python client.py
