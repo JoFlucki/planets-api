@@ -7,7 +7,7 @@ metadata:
 spec:
   ports:
     - port: 27017
-  clusterIP: None
+      protocol: TCP
   selector:
     role: mongo
 
@@ -33,22 +33,17 @@ spec:
       containers:
       - name: mongo
         image: mongo
-        command: ["mongod", "--dbpath", "/data/db", "--replSet", "rs0"]
+        command: ["mongod", "--replSet", "rs0", "--dbpath", "/data/db", "--bind_ip_all"]
         ports:
           - containerPort: 27017
         volumeMounts:
           - name: mongo-persistent-storage
             mountPath: /data/db
-      - name: mongo-sidecar
-        image: cvallance/mongo-k8s-sidecar
-        env:
-          - name: MONGO_SIDECAR_POD_LABELS
-            value: "role=mongo,environment=test"
   volumeClaimTemplates:
     - metadata:
         name: mongo-persistent-storage
       spec:
-        accessModes: ["ReadWriteMany"]
+        accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: 5Gi
