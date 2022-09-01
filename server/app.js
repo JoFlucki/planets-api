@@ -3,7 +3,7 @@ var app = express()
 app.listen(3000)
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://mongo-0.mongo,mongo-1.mongo,mongo-2.mongo";
+var url = "mongodb://mongo";
 var diameter = "500";
 
 
