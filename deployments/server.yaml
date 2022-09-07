@@ -5,7 +5,7 @@ metadata:
 spec:
   
   # nb de copies
-  replicas: 3
+  replicas: 1
 
   # 3. Which pods are managed by this deployment?
   selector:
